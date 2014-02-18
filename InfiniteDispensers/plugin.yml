@@ -1,0 +1,16 @@
+author: Juicy66173
+description: Plugin that allows players to specify dispensers, droppers and hoppers to make infinite.
+main: juicy66173.infinitedispensers.InfiniteDispensers
+name: InfiniteDispensers
+version: '1.7.2'
+description: >
+             Plugin that allows players to specify dispensers, droppers and hoppers to make infinite.
+commands:
+    infinitedispensers:
+        aliases: [infinitedispenser, infinitedropper, infinitehopper]
+        description: Selects a dispensers, droppers or hoppers to make infinite.
+        usage: |
+               /<command> - Selects a dispensers, droppers or hoppers to make infinite.
+               /<command> list - Lists all infinite dispensers, droppers and hoppers.
+               /<command> tp <number> - Teleports to the specified item on the list of infinite dispensers, droppers and hoppers.
+               /<command> remove <number/all> - Removes the specified item from the list of infinite dispensers, droppers and hoppers.
