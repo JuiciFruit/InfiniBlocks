@@ -3,6 +3,7 @@ package juicy66173.infinitedispensers;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.Iterator;
@@ -33,7 +34,7 @@ public class InfiniteDispensers extends JavaPlugin {
 
 	public void onDisable() {
 		saveDatabase();
-		
+
 		log("Thank you for using InfiniteDispensers by Juicy66173!");
 	}
 
@@ -41,15 +42,23 @@ public class InfiniteDispensers extends JavaPlugin {
 		PluginManager pm = getServer().getPluginManager();
 		mainPlugin = this;
 
+		try {
+			Metrics metrics = new Metrics(this);
+			metrics.start();
+		} catch (IOException e) {
+			log(e);
+			// Failed to submit the stats :-(
+		}
+
 		pm.registerEvents(new BlockListener(this), this);
 
-		getCommand("infinitedispenser").setExecutor(
+		getCommand("infinitedispensers").setExecutor(
 				new InfiniteDispenserPluginCommand(this));
 
 		getDataFolder().mkdirs();
-		
+
 		loadDatabase();
-		
+
 		log("Thank you for using InfiniteDispensers by Juicy66173!");
 	}
 
@@ -58,27 +67,26 @@ public class InfiniteDispensers extends JavaPlugin {
 	public void noPerm(Player player) {
 		err(player, "You do not have permission to do this.");
 	}
-	
+
 	public void usage(Player player, String label) {
 		err(player, "Usage: /" + label);
 		err(player, "Usage: /" + label + " " + "list");
 		err(player, "Usage: /" + label + " " + "tp <number>");
 		err(player, "Usage: /" + label + " " + "remove <number/all>");
 	}
-	
+
 	public void usage(CommandSender sender, String label) {
 		err(sender, "Usage: /" + label);
 		err(sender, "Usage: /" + label + " " + "list");
 		err(sender, "Usage: /" + label + " " + "tp <number>");
 		err(sender, "Usage: /" + label + " " + "remove <number/all>");
 	}
-	
+
 	public void list(Player player) {
 		player.sendMessage("");
-		player.sendMessage(ChatColor.GREEN + "==========["
-				+ ChatColor.BLUE + ChatColor.BOLD
-				+ " Infinite Dispensers List " + ChatColor.GREEN
-				+ "]==========");
+		player.sendMessage(ChatColor.GREEN + "==========[" + ChatColor.BLUE
+				+ ChatColor.BOLD + " Infinite Dispensers List "
+				+ ChatColor.GREEN + "]==========");
 
 		Object[] array = dispenserList.toArray();
 		for (int i = 0; i < array.length; i++) {
@@ -89,28 +97,23 @@ public class InfiniteDispensers extends JavaPlugin {
 			int y = block.getY();
 			int z = block.getZ();
 			World world = block.getWorld();
-			String blockType = block.getType().toString()
-					.toLowerCase();
+			String blockType = block.getType().toString().toLowerCase();
 
-			player.sendMessage(ChatColor.BLUE
-					+ String.valueOf(i + 1) + ".  "
-					+ ChatColor.YELLOW + "Type:" + ChatColor.GREEN
-					+ blockType + ChatColor.YELLOW + " World:"
-					+ ChatColor.GREEN + world.getName()
-					+ ChatColor.YELLOW + " x:" + ChatColor.GREEN
-					+ x + ChatColor.YELLOW + " y:"
-					+ ChatColor.GREEN + y + ChatColor.YELLOW
-					+ " z:" + ChatColor.GREEN + z
-					+ ChatColor.YELLOW + ".");
+			player.sendMessage(ChatColor.BLUE + String.valueOf(i + 1) + ".  "
+					+ ChatColor.YELLOW + "Type:" + ChatColor.GREEN + blockType
+					+ ChatColor.YELLOW + " World:" + ChatColor.GREEN
+					+ world.getName() + ChatColor.YELLOW + " x:"
+					+ ChatColor.GREEN + x + ChatColor.YELLOW + " y:"
+					+ ChatColor.GREEN + y + ChatColor.YELLOW + " z:"
+					+ ChatColor.GREEN + z + ChatColor.YELLOW + ".");
 		}
 	}
-	
+
 	public void list(CommandSender sender) {
 		sender.sendMessage("");
-		sender.sendMessage(ChatColor.GREEN + "==========["
-				+ ChatColor.BLUE + ChatColor.BOLD
-				+ " Infinite Dispensers List " + ChatColor.GREEN
-				+ "]==========");
+		sender.sendMessage(ChatColor.GREEN + "==========[" + ChatColor.BLUE
+				+ ChatColor.BOLD + " Infinite Dispensers List "
+				+ ChatColor.GREEN + "]==========");
 
 		Object[] array = dispenserList.toArray();
 		for (int i = 0; i < array.length; i++) {
@@ -121,19 +124,15 @@ public class InfiniteDispensers extends JavaPlugin {
 			int y = block.getY();
 			int z = block.getZ();
 			World world = block.getWorld();
-			String blockType = block.getType().toString()
-					.toLowerCase();
+			String blockType = block.getType().toString().toLowerCase();
 
-			sender.sendMessage(ChatColor.BLUE
-					+ String.valueOf(i + 1) + ".  "
-					+ ChatColor.YELLOW + "Type:" + ChatColor.GREEN
-					+ blockType + ChatColor.YELLOW + " World:"
-					+ ChatColor.GREEN + world.getName()
-					+ ChatColor.YELLOW + " x:" + ChatColor.GREEN
-					+ x + ChatColor.YELLOW + " y:"
-					+ ChatColor.GREEN + y + ChatColor.YELLOW
-					+ " z:" + ChatColor.GREEN + z
-					+ ChatColor.YELLOW + ".");
+			sender.sendMessage(ChatColor.BLUE + String.valueOf(i + 1) + ".  "
+					+ ChatColor.YELLOW + "Type:" + ChatColor.GREEN + blockType
+					+ ChatColor.YELLOW + " World:" + ChatColor.GREEN
+					+ world.getName() + ChatColor.YELLOW + " x:"
+					+ ChatColor.GREEN + x + ChatColor.YELLOW + " y:"
+					+ ChatColor.GREEN + y + ChatColor.YELLOW + " z:"
+					+ ChatColor.GREEN + z + ChatColor.YELLOW + ".");
 		}
 	}
 
