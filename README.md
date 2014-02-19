@@ -34,4 +34,4 @@ Permissions
 |infinitedispensers.list|/infinitedispensers list|Lists all registered infinite dispensers droppers and hoppers, as well as as showing the player their assigned number, type, world and x/y/z coorinates|Op|
 |infinitedispensers.tp|/infinitedispensers tp <number>|Teleports the player to the specified number on the list of infinite dispensers, droppers and hoppers|Op|
 |infinitedispensers.remove|/infinitedispensers remove <number>|Removes the dispenser, dropper or hopper assigned to the number specified|Op|
-|infinitedispensers.all|/infinitedispensers remove all|Removes all dispensers, droppers and hoppers from the list|False|
+|infinitedispensers.remove.all|/infinitedispensers remove all|Removes all dispensers, droppers and hoppers from the list|False|
