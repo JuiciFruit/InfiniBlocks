@@ -9,10 +9,6 @@ public class InfiniteDispenser {
 		this.location = location;
 	}
 
-	public InfiniteDispenser(Location location, int cooldown) {
-		this.location = location;
-	}
-
 	public Location getLocation() {
 		return this.location;
 	}
