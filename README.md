@@ -6,6 +6,8 @@ Allows you to create infinite dispensers, droppers and hoppers in minecraft.
 Bukkit Dev Link: http://dev.bukkit.org/bukkit-plugins/infinitedispensers-juicy66173/
 
 
+MCStats: [Stats for InfiniteDispensers](http://mcstats.org/plugin/InfiniteDispensers)  
+![MCStats for InfiniteDispensers](http://api.mcstats.org/signature/InfiniteDispensers.png)
 
 
 Download
