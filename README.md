@@ -17,8 +17,7 @@ Download
 The plugin can be downloaded here, whilst waiting for the project approval.
 Version:
   
-* [v1.0.1](http://dev.bukkit.org/media/files/774/571/InfiniteDispensers_v1.0.1.jar)
-* [v1.0.0](http://dev.bukkit.org/media/files/774/257/InfiniteDispensers_v1.0.0.jar)
+* [v1.0.1](http://dev.bukkit.org/media/files/774/571/InfiniteDispensers_v1.0.1.jar) for 1.7.2
 
 
 
