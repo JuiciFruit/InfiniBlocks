@@ -7,7 +7,7 @@ Bukkit Dev Link: http://dev.bukkit.org/bukkit-plugins/infinitedispensers-juicy66
 
 
 MCStats: [Stats for InfiniteDispensers](http://mcstats.org/plugin/InfiniteDispensers)  
-![MCStats for InfiniteDispensers](http://api.mcstats.org/signature/InfiniteDispensers.png)
+[![MCStats for InfiniteDispensers](http://api.mcstats.org/signature/InfiniteDispensers.png)](http://mcstats.org/plugin/InfiniteDispensers)
 
 
 Download
