@@ -2,7 +2,7 @@ author: Juicy66173
 description: Plugin that allows players to specify dispensers, droppers and hoppers to make infinite.
 main: juicy66173.infinitedispensers.InfiniteDispensers
 name: InfiniteDispensers
-version: '1.7.2'
+version: '1.0.1'
 description: >
              Plugin that allows players to specify dispensers, droppers and hoppers to make infinite.
 commands:
