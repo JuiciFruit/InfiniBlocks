@@ -7,7 +7,7 @@ Bukkit Dev Link: http://dev.bukkit.org/bukkit-plugins/infinitedispensers-juicy66
 
 
 MCStats: [Stats for InfiniteDispensers](http://mcstats.org/plugin/InfiniteDispensers)  
-![MCStats for InfiniteDispensers](http://api.mcstats.org/signature/InfiniteDispensers.png)
+[![MCStats for InfiniteDispensers](http://api.mcstats.org/signature/InfiniteDispensers.png)](http://mcstats.org/plugin/InfiniteDispensers)
 
 
 Download
@@ -17,7 +17,7 @@ Download
 The plugin can be downloaded here, whilst waiting for the project approval.
 Version:
   
-* [v1.0.0](http://dev.bukkit.org/media/files/774/257/InfiniteDispensers_v1.0.0.jar)
+* [v1.0.1](http://dev.bukkit.org/media/files/774/571/InfiniteDispensers_v1.0.1.jar) for 1.7.2
 
 
 
@@ -34,4 +34,4 @@ Permissions
 |infinitedispensers.list|/infinitedispensers list|Lists all registered infinite dispensers droppers and hoppers, as well as as showing the player their assigned number, type, world and x/y/z coorinates|Op|
 |infinitedispensers.tp|/infinitedispensers tp <number>|Teleports the player to the specified number on the list of infinite dispensers, droppers and hoppers|Op|
 |infinitedispensers.remove|/infinitedispensers remove <number>|Removes the dispenser, dropper or hopper assigned to the number specified|Op|
-|infinitedispensers.all|/infinitedispensers remove all|Removes all dispensers, droppers and hoppers from the list|False|
+|infinitedispensers.remove.all|/infinitedispensers remove all|Removes all dispensers, droppers and hoppers from the list|False|
