@@ -29,9 +29,9 @@ Permissions
 
 |Permission|Command|Description|Default|
 |----------|-------|-----------|-------|
-|infiniblocks.use|/infiniblocks|Toggles whether a dispenser, dropper or hopper is infinite or not|Op|
-|infiniblocks.override|No command|Allows the player to break registered infinite dispensers, droppers and hoppers without first unregistering them by command|False|
-|infiniblocks.list|/infiniblocks list|Lists all registered infinite dispensers droppers and hoppers, as well as as showing the player their assigned number, type, world and x/y/z coorinates|Op|
-|infiniblocks.tp|/infiniblocks tp <number>|Teleports the player to the specified number on the list of infinite dispensers, droppers and hoppers|Op|
-|infiniblocks.remove|/infiniblocks remove <number>|Removes the dispenser, dropper or hopper assigned to the number specified|Op|
-|infiniblocks.remove.all|/infiniblocks remove all|Removes all dispensers, droppers and hoppers from the list|False|
+|infiniblocks.use|/infiniblocks|Toggles whether a blocks is an infiniblock or not|Op|
+|infiniblocks.override|No command|Allows the player to break registered infiniblocks without first unregistering them by command|False|
+|infiniblocks.list|/infiniblocks list|Lists all registered infiniblocks, as well as as showing the player their assigned number, type, world and x/y/z coorinates|Op|
+|infiniblocks.tp|/infiniblocks tp <number>|Teleports the player to the specified number on the list of infiniblocks|Op|
+|infiniblocks.remove|/infiniblocks remove <number>|Removes the infiniblocks assigned to the number specified|Op|
+|infiniblocks.remove.all|/infiniblocks remove all|Removes all infiniblocks from the list|False|
