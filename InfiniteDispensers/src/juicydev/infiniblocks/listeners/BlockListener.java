@@ -1,13 +1,11 @@
-package juicy66173.infinitedispensers.listeners;
+package juicydev.infiniblocks.listeners;
 
 import java.util.Iterator;
 
-import juicy66173.infinitedispensers.InfiniteDispenser;
-import juicy66173.infinitedispensers.InfiniteDispensers;
-import juicy66173.infinitedispensers.Perms;
+import juicydev.infiniblocks.InfiniBlock;
+import juicydev.infiniblocks.InfiniBlocks;
+import juicydev.infiniblocks.Perms;
 
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -25,9 +23,9 @@ import org.bukkit.inventory.ItemStack;
 
 public class BlockListener implements Listener {
 
-	private final InfiniteDispensers plugin;
+	private final InfiniBlocks plugin;
 
-	public BlockListener(InfiniteDispensers plugin) {
+	public BlockListener(InfiniBlocks plugin) {
 		this.plugin = plugin;
 	}
 
@@ -36,11 +34,11 @@ public class BlockListener implements Listener {
 		if (event.isCancelled())
 			return;
 
-		Iterator<InfiniteDispenser> it = plugin.dispenserList.iterator();
+		Iterator<InfiniBlock> it = plugin.blockList.iterator();
 
 		while (it.hasNext()) {
-			InfiniteDispenser dispenser = (InfiniteDispenser) it.next();
-			Location pos = dispenser.getLocation();
+			InfiniBlock infblock = (InfiniBlock) it.next();
+			Location pos = infblock.getLocation();
 
 			if (pos.equals(event.getBlock().getLocation())) {
 				if (event.getBlock().getType().equals(Material.DISPENSER)) {
@@ -64,15 +62,16 @@ public class BlockListener implements Listener {
 		}
 	}
 
+	@SuppressWarnings("unused")
 	@EventHandler
 	public void onHopperMoveItem(InventoryMoveItemEvent event) {
 		if (event.isCancelled())
 			return;
 
-		Iterator<InfiniteDispenser> it = plugin.dispenserList.iterator();
+		Iterator<InfiniBlock> it = plugin.blockList.iterator();
 
 		while (it.hasNext()) {
-			InfiniteDispenser dispenser = (InfiniteDispenser) it.next();
+			InfiniBlock dispenser = (InfiniBlock) it.next();
 			Location pos = dispenser.getLocation();
 
 			Inventory src = event.getSource();
@@ -90,16 +89,6 @@ public class BlockListener implements Listener {
 					}
 				}
 			}
-
-			Bukkit.broadcastMessage(ChatColor.YELLOW + "Source Inventory: "
-					+ ChatColor.GREEN + src.getName());
-			Bukkit.broadcastMessage(ChatColor.YELLOW
-					+ "Destination Inventory: " + ChatColor.GREEN
-					+ dest.getName());
-			Bukkit.broadcastMessage(ChatColor.YELLOW + "Initiator Inventory: "
-					+ ChatColor.GREEN + init.getName());
-			Bukkit.broadcastMessage(ChatColor.YELLOW + "Item: "
-					+ ChatColor.GREEN + itemStack.getType().toString());
 		}
 
 		return;
@@ -115,15 +104,15 @@ public class BlockListener implements Listener {
 
 		Player player = event.getPlayer();
 
-		Iterator<InfiniteDispenser> it = plugin.dispenserList.iterator();
+		Iterator<InfiniBlock> it = plugin.blockList.iterator();
 
 		while (it.hasNext()) {
-			InfiniteDispenser dispenser = (InfiniteDispenser) it.next();
-			Location pos = dispenser.getLocation();
+			InfiniBlock infblock = (InfiniBlock) it.next();
+			Location pos = infblock.getLocation();
 
 			if (loc.equals(pos)) {
 				if (player.hasPermission(Perms.OVERRIDE)) {
-					plugin.dispenserList.remove(dispenser);
+					plugin.blockList.remove(infblock);
 					plugin.saveDatabase();
 					plugin.err(player, "You destroyed an infinite "
 							+ block.getType().toString().toLowerCase()

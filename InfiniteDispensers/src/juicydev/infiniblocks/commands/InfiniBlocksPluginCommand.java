@@ -1,26 +1,27 @@
-package juicy66173.infinitedispensers.commands;
+package juicydev.infiniblocks.commands;
 
 import java.util.Iterator;
 
-import juicy66173.infinitedispensers.InfiniteDispenser;
-import juicy66173.infinitedispensers.InfiniteDispensers;
-import juicy66173.infinitedispensers.Perms;
+import juicydev.infiniblocks.InfiniBlock;
+import juicydev.infiniblocks.InfiniBlocks;
+import juicydev.infiniblocks.Perms;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.block.Furnace;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 @SuppressWarnings("deprecation")
-public class InfiniteDispenserPluginCommand implements CommandExecutor {
+public class InfiniBlocksPluginCommand implements CommandExecutor {
 
-	private final InfiniteDispensers plugin;
+	private final InfiniBlocks plugin;
 
-	public InfiniteDispenserPluginCommand(InfiniteDispensers plugin) {
+	public InfiniBlocksPluginCommand(InfiniBlocks plugin) {
 		this.plugin = plugin;
 	}
 
@@ -38,29 +39,36 @@ public class InfiniteDispenserPluginCommand implements CommandExecutor {
 			if (args.length == 0) {
 				Block block = player.getTargetBlock(null, 5);
 
-				if ((block.getType() == Material.DISPENSER)
-						|| (block.getType() == Material.DROPPER)
-						|| (block.getType() == Material.HOPPER)) {
+				if ((block.getType().equals(Material.DISPENSER))
+						|| (block.getType().equals(Material.DROPPER))
+						|| (block.getType().equals(Material.HOPPER))
+						|| (block.getType().equals(Material.FURNACE)
+								|| (block.getType()
+										.equals(Material.BURNING_FURNACE)) || (block
+									.getType().equals(Material.ANVIL)))) {
 					Location loc = block.getLocation();
 
-					Iterator<InfiniteDispenser> it = plugin.dispenserList
-							.iterator();
+					Iterator<InfiniBlock> it = plugin.blockList.iterator();
 
 					while (it.hasNext()) {
-						InfiniteDispenser dispenser = (InfiniteDispenser) it
-								.next();
-						Location pos = dispenser.getLocation();
+						InfiniBlock infblock = (InfiniBlock) it.next();
+						Location pos = infblock.getLocation();
 
 						if (loc.equals(pos)) {
-							plugin.dispenserList.remove(dispenser);
+							plugin.blockList.remove(infblock);
 							plugin.saveDatabase();
 
-							plugin.msg(
-									player,
-									"This "
-											+ block.getType().toString()
-													.toLowerCase()
-											+ " is no longer infinite. It can now run out of contents.");
+							if ((block.getType().equals(Material.FURNACE))
+									|| (block.getType()
+											.equals(Material.BURNING_FURNACE))) {
+								block.setType(Material.FURNACE);
+								Furnace f = (Furnace) block.getState();
+								f.setBurnTime((short) (20 * 0));
+							}
+
+							plugin.msg(player, "This "
+									+ block.getType().toString().toLowerCase()
+									+ " is no longer infinite.");
 							plugin.log(player.getName()
 									+ " removed an infinite "
 									+ block.getType().toString().toLowerCase()
@@ -72,8 +80,22 @@ public class InfiniteDispenserPluginCommand implements CommandExecutor {
 						}
 					}
 
-					plugin.dispenserList.add(new InfiniteDispenser(loc));
+					plugin.blockList.add(new InfiniBlock(loc));
 					plugin.saveDatabase();
+
+					if ((block.getType().equals(Material.FURNACE))
+							|| (block.getType()
+									.equals(Material.BURNING_FURNACE))) {
+						block.setType(Material.BURNING_FURNACE);
+						Furnace f = (Furnace) block.getState();
+						f.setBurnTime((short) (20 * 60));
+					}
+
+					if (block.getType().equals(Material.ANVIL)) {
+						while (block.getData() >= 4) {
+							block.setData((byte) (block.getData() - 4), false);
+						}
+					}
 
 					plugin.msg(player, "This "
 							+ block.getType().toString().toLowerCase()
@@ -83,8 +105,7 @@ public class InfiniteDispenserPluginCommand implements CommandExecutor {
 							+ " at x:" + loc.getBlockX() + " y:"
 							+ loc.getBlockY() + " z:" + loc.getBlockZ() + ".");
 				} else {
-					plugin.err(player,
-							"Please select a dispenser, dropper or hopper");
+					plugin.err(player, "Please select a valid block.");
 				}
 			} else if (args.length == 1) {
 				if (args[0].equalsIgnoreCase("list")) {
@@ -102,15 +123,15 @@ public class InfiniteDispenserPluginCommand implements CommandExecutor {
 						try {
 							int num = Integer.parseInt(args[1]);
 
-							Object[] array = plugin.dispenserList.toArray();
+							Object[] array = plugin.blockList.toArray();
 							if ((num >= 1) && (num <= array.length)) {
 								if (array[num - 1].equals(null)) {
 									plugin.err(
 											player,
-											"Please select a valid option. Use '/infinitedispensers list' for a list of valid options.");
+											"Please select a valid option. Use '/infiniblocks list' for a list of valid options.");
 									return true;
 								}
-								InfiniteDispenser dispenser = (InfiniteDispenser) array[num - 1];
+								InfiniBlock dispenser = (InfiniBlock) array[num - 1];
 								Block block = dispenser.getLocation()
 										.getBlock();
 
@@ -138,7 +159,7 @@ public class InfiniteDispenserPluginCommand implements CommandExecutor {
 							} else {
 								plugin.err(
 										player,
-										"Please select a valid option. Use '/infinitedispensers list' for a list of valid options.");
+										"Please select a valid option. Use '/infiniblocks list' for a list of valid options.");
 							}
 						} catch (NumberFormatException e) {
 							plugin.err(player, "That is not a valid integer.");
@@ -150,7 +171,7 @@ public class InfiniteDispenserPluginCommand implements CommandExecutor {
 					if (player.hasPermission(Perms.REMOVE)) {
 						if (args[1].equalsIgnoreCase("all")) {
 							if (player.hasPermission(Perms.REMOVE_ALL)) {
-								plugin.dispenserList.clear();
+								plugin.blockList.clear();
 								plugin.saveDatabase();
 							} else {
 								plugin.noPerm(player);
@@ -159,32 +180,29 @@ public class InfiniteDispenserPluginCommand implements CommandExecutor {
 							try {
 								int num = Integer.parseInt(args[1]);
 
-								Object[] array = plugin.dispenserList.toArray();
+								Object[] array = plugin.blockList.toArray();
 								if ((num >= 1) && (num <= array.length)) {
 									if (array[num - 1].equals(null)) {
 										plugin.err(
 												player,
-												"Please select a valid option. Use '/infinitedispensers list' for a list of valid options.");
+												"Please select a valid option. Use '/infiniblocks list' for a list of valid options.");
 										return true;
 									}
-									InfiniteDispenser dispenser = (InfiniteDispenser) array[num - 1];
-									Block block = dispenser.getLocation()
+									InfiniBlock infblock = (InfiniBlock) array[num - 1];
+									Block block = infblock.getLocation()
 											.getBlock();
 
-									plugin.dispenserList.remove(dispenser);
+									plugin.blockList.remove(infblock);
 									plugin.saveDatabase();
 
-									plugin.msg(
-											player,
-											"The "
-													+ block.getType()
-															.toString()
-															.toLowerCase()
-													+ " is no longer infinite.  It can now run out of contents.");
+									plugin.msg(player, "The "
+											+ block.getType().toString()
+													.toLowerCase()
+											+ " is no longer infinite.");
 								} else {
 									plugin.err(
 											player,
-											"Please select a valid option. Use '/infinitedispensers list' for a list of valid options.");
+											"Please select a valid option. Use '/infiniblocks list' for a list of valid options.");
 								}
 							} catch (NumberFormatException e) {
 								plugin.err(player,
@@ -210,25 +228,24 @@ public class InfiniteDispenserPluginCommand implements CommandExecutor {
 			} else if (args.length == 2) {
 				if (args[0].equalsIgnoreCase("remove")) {
 					if (args[1].equalsIgnoreCase("all")) {
-						plugin.dispenserList.clear();
+						plugin.blockList.clear();
 						plugin.saveDatabase();
 					} else {
 						try {
 							int num = Integer.parseInt(args[1]);
 
-							Object[] array = plugin.dispenserList.toArray();
+							Object[] array = plugin.blockList.toArray();
 							if ((num >= 1) && (num <= array.length)) {
 								if (array[num - 1].equals(null)) {
 									plugin.err(
 											sender,
-											"Please select a valid option. Use '/infinitedispensers list' for a list of valid options.");
+											"Please select a valid option. Use '/infiniblocks list' for a list of valid options.");
 									return true;
 								}
-								InfiniteDispenser dispenser = (InfiniteDispenser) array[num - 1];
-								Block block = dispenser.getLocation()
-										.getBlock();
+								InfiniBlock infblock = (InfiniBlock) array[num - 1];
+								Block block = infblock.getLocation().getBlock();
 
-								plugin.dispenserList.remove(dispenser);
+								plugin.blockList.remove(infblock);
 								plugin.saveDatabase();
 
 								plugin.msg(
@@ -240,7 +257,7 @@ public class InfiniteDispenserPluginCommand implements CommandExecutor {
 							} else {
 								plugin.err(
 										sender,
-										"Please select a valid option. Use '/infinitedispensers list' for a list of valid options.");
+										"Please select a valid option. Use '/infiniblocks list' for a list of valid options.");
 							}
 						} catch (NumberFormatException e) {
 							plugin.err(sender, "That is not a valid integer.");

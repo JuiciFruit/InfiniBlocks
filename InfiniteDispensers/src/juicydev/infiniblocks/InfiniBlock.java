@@ -1,11 +1,11 @@
-package juicy66173.infinitedispensers;
+package juicydev.infiniblocks;
 
 import org.bukkit.Location;
 
-public class InfiniteDispenser {
+public class InfiniBlock {
 	protected final Location location;
 
-	public InfiniteDispenser(Location location) {
+	public InfiniBlock(Location location) {
 		this.location = location;
 	}
 

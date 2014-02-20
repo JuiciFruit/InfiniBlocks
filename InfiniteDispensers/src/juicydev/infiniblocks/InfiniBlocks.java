@@ -1,4 +1,4 @@
-package juicy66173.infinitedispensers;
+package juicydev.infiniblocks;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -11,31 +11,34 @@ import java.util.Scanner;
 import java.util.Vector;
 import java.util.logging.Logger;
 
-import juicy66173.infinitedispensers.commands.InfiniteDispenserPluginCommand;
-import juicy66173.infinitedispensers.listeners.BlockListener;
+import juicydev.infiniblocks.commands.InfiniBlocksPluginCommand;
+import juicydev.infiniblocks.listeners.BlockListener;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.block.Furnace;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class InfiniteDispensers extends JavaPlugin {
+@SuppressWarnings("deprecation")
+public class InfiniBlocks extends JavaPlugin {
 
-	public Vector<InfiniteDispenser> dispenserList = new Vector<InfiniteDispenser>();
+	public Vector<InfiniBlock> blockList = new Vector<InfiniBlock>();
 
-	public static InfiniteDispensers mainPlugin;
-	public static String loggerPrefix = "[InfiniteDispensers] ";
+	public static InfiniBlocks mainPlugin;
+	public static String loggerPrefix = "[InfiniBlocks] ";
 	public static Logger logger = Logger
-			.getLogger("Minecraft.InfiniteDispensers.Juicy66173");
+			.getLogger("Minecraft.InfiniBlocks.JuicyDev");
 
 	public void onDisable() {
 		saveDatabase();
 
-		log("Thank you for using InfiniteDispensers by Juicy66173!");
+		log("Thank you for using InfiniBlocks by JuicyDev!");
 	}
 
 	public void onEnable() {
@@ -47,19 +50,43 @@ public class InfiniteDispensers extends JavaPlugin {
 			metrics.start();
 		} catch (IOException e) {
 			log(e);
-			// Failed to submit the stats :-(
 		}
+
+		getServer().getScheduler().scheduleSyncRepeatingTask(mainPlugin,
+				new Runnable() {
+					@Override
+					public void run() {
+						Iterator<InfiniBlock> it = blockList.iterator();
+
+						while (it.hasNext()) {
+							InfiniBlock infblock = (InfiniBlock) it.next();
+							Block bl = infblock.getLocation().getBlock();
+
+							if (bl.getType().equals(Material.ANVIL)) {
+								while (bl.getData() >= 4) {
+									bl.setData((byte) (bl.getData() - 4), false);
+								}
+							}
+
+							if ((bl.getState().getType()
+									.equals(Material.BURNING_FURNACE))) {
+								Furnace f = (Furnace) bl.getState();
+								f.setBurnTime((short) (20 * 60));
+							}
+						}
+					}
+				}, 0L, (long) (20 * 5)); /* Fires every 5 seconds */
 
 		pm.registerEvents(new BlockListener(this), this);
 
-		getCommand("infinitedispensers").setExecutor(
-				new InfiniteDispenserPluginCommand(this));
+		getCommand("infiniblocks").setExecutor(
+				new InfiniBlocksPluginCommand(this));
 
 		getDataFolder().mkdirs();
 
 		loadDatabase();
 
-		log("Thank you for using InfiniteDispensers by Juicy66173!");
+		log("Thank you for using InfiniBlocks by JuicyDev!");
 	}
 
 	/* ===== Methods ===== */
@@ -85,12 +112,12 @@ public class InfiniteDispensers extends JavaPlugin {
 	public void list(Player player) {
 		player.sendMessage("");
 		player.sendMessage(ChatColor.GREEN + "==========[" + ChatColor.BLUE
-				+ ChatColor.BOLD + " Infinite Dispensers List "
-				+ ChatColor.GREEN + "]==========");
+				+ ChatColor.BOLD + " InfiniBlocks List " + ChatColor.GREEN
+				+ "]==========");
 
-		Object[] array = dispenserList.toArray();
+		Object[] array = blockList.toArray();
 		for (int i = 0; i < array.length; i++) {
-			InfiniteDispenser dispenser = (InfiniteDispenser) array[i];
+			InfiniBlock dispenser = (InfiniBlock) array[i];
 			Block block = dispenser.getLocation().getBlock();
 
 			int x = block.getX();
@@ -112,12 +139,12 @@ public class InfiniteDispensers extends JavaPlugin {
 	public void list(CommandSender sender) {
 		sender.sendMessage("");
 		sender.sendMessage(ChatColor.GREEN + "==========[" + ChatColor.BLUE
-				+ ChatColor.BOLD + " Infinite Dispensers List "
-				+ ChatColor.GREEN + "]==========");
+				+ ChatColor.BOLD + " InfiniBlocks List " + ChatColor.GREEN
+				+ "]==========");
 
-		Object[] array = dispenserList.toArray();
+		Object[] array = blockList.toArray();
 		for (int i = 0; i < array.length; i++) {
-			InfiniteDispenser dispenser = (InfiniteDispenser) array[i];
+			InfiniBlock dispenser = (InfiniBlock) array[i];
 			Block block = dispenser.getLocation().getBlock();
 
 			int x = block.getX();
@@ -166,11 +193,11 @@ public class InfiniteDispensers extends JavaPlugin {
 	}
 
 	public void loadDatabase() {
-		if (new File(getDataFolder(), "dispensers.dat").exists()) {
+		if (new File(getDataFolder(), "blocks.dat").exists()) {
 			Scanner scanner = null;
 			try {
 				scanner = new Scanner(new FileInputStream(new File(
-						getDataFolder(), "dispensers.dat")), "UTF-8");
+						getDataFolder(), "blocks.dat")), "UTF-8");
 
 				while (scanner.hasNextLine()) {
 					String line = scanner.nextLine().replace("\n", "")
@@ -185,21 +212,21 @@ public class InfiniteDispensers extends JavaPlugin {
 						double z = Double.parseDouble(lineEx[2]);
 						World world = getServer().getWorld(lineEx[3]);
 
-						this.dispenserList.add(new InfiniteDispenser(
-								new Location(world, x, y, z)));
+						this.blockList.add(new InfiniBlock(new Location(world,
+								x, y, z)));
 					}
 				}
-				log("Loaded " + this.dispenserList.size()
-						+ " infinitedispensers from database.");
+				log("Loaded " + this.blockList.size()
+						+ " infiniblocks from database.");
 			} catch (Exception ex) {
-				log("Cannot load dispensers.dat!");
+				log("Cannot load blocks.dat!");
 				ex.printStackTrace();
 			} finally {
 				if (scanner != null)
 					scanner.close();
 			}
 		} else {
-			log("There's no dispensers.dat! Creating one on next save.");
+			log("There's no blocks.dat! Creating one on next save.");
 		}
 
 	}
@@ -207,12 +234,12 @@ public class InfiniteDispensers extends JavaPlugin {
 	public void saveDatabase() {
 		try {
 			Writer out = new OutputStreamWriter(new FileOutputStream(new File(
-					getDataFolder(), "dispensers.dat")), "UTF-8");
+					getDataFolder(), "blocks.dat")), "UTF-8");
 
-			Iterator<InfiniteDispenser> it = this.dispenserList.iterator();
+			Iterator<InfiniBlock> it = this.blockList.iterator();
 
 			while (it.hasNext()) {
-				InfiniteDispenser dispenser = (InfiniteDispenser) it.next();
+				InfiniBlock dispenser = (InfiniBlock) it.next();
 				Location pos = dispenser.getLocation();
 
 				out.write(pos.getBlockX() + ";" + pos.getBlockY() + ";"
@@ -224,10 +251,10 @@ public class InfiniteDispensers extends JavaPlugin {
 			out.close();
 
 			getLogger().info(
-					"Saved " + this.dispenserList.size()
-							+ " dispensers to database.");
+					"Saved " + this.blockList.size()
+							+ " infiniblocks to database.");
 		} catch (Exception ex) {
-			getLogger().severe("Cannot save dispensers.dat!");
+			getLogger().severe("Cannot save blocks.dat!");
 			ex.printStackTrace();
 		}
 	}
