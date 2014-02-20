@@ -1,0 +1,16 @@
+author: JuicyDev
+description: Plugin that allows players to specify dispensers, droppers, hoppers and more to make infinite.
+main: juicydev.infiniblocks.InfiniBlocks
+name: InfiniBlocks
+version: '1.0.2'
+description: >
+             Plugin that allows players to specify dispensers, droppers, hoppers  and more to make infinite.
+commands:
+    infiniblocks:
+        aliases: [infini, infinite, infblock]
+        description: Selects a dispensers, droppers, hoppers and more to make infinite.
+        usage: |
+               /<command> - Selects a dispensers, droppers or hoppers to make infinite.
+               /<command> list - Lists all infinite dispensers, droppers and hoppers.
+               /<command> tp <number> - Teleports to the specified item on the list of infinite dispensers, droppers and hoppers.
+               /<command> remove <number/all> - Removes the specified item from the list of infinite dispensers, droppers and hoppers.
