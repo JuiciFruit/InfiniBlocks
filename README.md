@@ -17,7 +17,7 @@ Download
 The plugin can be downloaded here, whilst waiting for the project approval.
 Version:
   
-* [v1.0.2](http://dev.bukkit.org/media/files/774/781/InfiniBlocks_v1.0.2.jar) for 1.7.2
+* [v1.0.3](http://dev.bukkit.org/media/files/775/513/InfiniBlocks_v1.0.3.jar) for 1.7.2
 
 
 
