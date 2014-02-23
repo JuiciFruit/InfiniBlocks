@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>InfiniBlocks</groupId>
   <artifactId>InfiniBlocks</artifactId>
-  <version>1.0.2</version>
+  <version>1.0.3</version>
   <name>InfiniBlocks</name>
   <description>Allows you to create infinite dispensers, droppers, hoppers and more in bukkit.</description>
   <build>

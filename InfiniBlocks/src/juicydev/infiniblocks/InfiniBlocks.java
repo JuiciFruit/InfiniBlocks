@@ -137,10 +137,14 @@ public class InfiniBlocks extends JavaPlugin {
 	}
 
 	public void list(CommandSender sender) {
-		sender.sendMessage("");
-		sender.sendMessage(ChatColor.GREEN + "==========[" + ChatColor.BLUE
-				+ ChatColor.BOLD + " InfiniBlocks List " + ChatColor.GREEN
-				+ "]==========");
+		if (blockList.size() >= 1) {
+			sender.sendMessage("");
+			sender.sendMessage(ChatColor.GREEN + "==========[" + ChatColor.BLUE
+					+ ChatColor.BOLD + " InfiniBlocks List " + ChatColor.GREEN
+					+ "]==========");
+		} else {
+			err(sender, "There are no infiniblocks to list.");
+		}
 
 		Object[] array = blockList.toArray();
 		for (int i = 0; i < array.length; i++) {
