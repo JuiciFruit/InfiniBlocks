@@ -30,14 +30,20 @@ public class InfiniBlocks extends JavaPlugin {
 
 	public Vector<InfiniBlock> blockList = new Vector<InfiniBlock>();
 
-	public static InfiniBlocks mainPlugin;
-	public static String loggerPrefix = "[InfiniBlocks] ";
-	public static Logger logger = Logger
-			.getLogger("Minecraft.InfiniBlocks.JuicyDev");
+	public InfiniBlocks mainPlugin;
+	public String loggerPrefix = "[InfiniBlocks] ";
+	public Logger logger = Logger.getLogger("Minecraft.InfiniBlocks.JuicyDev");
+	public String version = "";
+
+	public static final String bukkitDevBase = "http://dev.bukkit.org/bukkit-plugins";
+	public static final String slug = "infinitedispensers-juicy66173";
+	public static final String rssFeed = "files.rss";
+
+	public UpdateChecker updateChecker;
+	public boolean updateCheckEnabled = false;
 
 	public void onDisable() {
 		saveDatabase();
-
 		log("Thank you for using InfiniBlocks by JuicyDev!");
 	}
 
@@ -51,6 +57,13 @@ public class InfiniBlocks extends JavaPlugin {
 		} catch (IOException e) {
 			log(e);
 		}
+
+		getConfig().options().copyDefaults(true);
+		saveConfig();
+		version = getDescription().getVersion();
+		updateCheckEnabled = getConfig().getBoolean("update-check");
+		this.updateChecker = new UpdateChecker(mainPlugin, bukkitDevBase + "/"
+				+ slug + "/" + rssFeed, updateCheckEnabled);
 
 		getServer().getScheduler().scheduleSyncRepeatingTask(mainPlugin,
 				new Runnable() {
@@ -87,6 +100,14 @@ public class InfiniBlocks extends JavaPlugin {
 		loadDatabase();
 
 		log("Thank you for using InfiniBlocks by JuicyDev!");
+
+		if (updateCheckEnabled) {
+			if (updateChecker.isUpdateNeeded()) {
+				updateChecker.logUpdateInfo(true);
+			} else {
+				updateChecker.logUpdateInfo(false);
+			}
+		}
 	}
 
 	/* ===== Methods ===== */
@@ -194,6 +215,10 @@ public class InfiniBlocks extends JavaPlugin {
 	public void log(Throwable e) {
 		logger.severe(loggerPrefix + e.toString());
 		e.printStackTrace();
+	}
+
+	public String getVersion() {
+		return this.version;
 	}
 
 	public void loadDatabase() {

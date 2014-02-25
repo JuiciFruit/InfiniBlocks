@@ -1,0 +1,2 @@
+# Set this to false to disable update checking
+update-check: true

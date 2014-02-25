@@ -2,7 +2,7 @@ author: JuicyDev
 description: Plugin that allows players to specify dispensers, droppers, hoppers and more to make infinite.
 main: juicydev.infiniblocks.InfiniBlocks
 name: InfiniBlocks
-version: '1.0.3'
+version: '1.0.4'
 description: >
              Plugin that allows players to specify dispensers, droppers, hoppers  and more to make infinite.
 commands:
